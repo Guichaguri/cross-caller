@@ -1,0 +1,41 @@
+{
+  "name": "cross-caller",
+  "version": "1.0.0",
+  "description": "Gets the caller function, file and line number in all browsers and server environments",
+  "license": "MIT",
+  "author": "Guilherme Chaguri",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Guichaguri/cross-caller.git"
+  },
+  "keywords": [
+    "cross-platform",
+    "caller",
+    "callsites",
+    "callsite",
+    "calling",
+    "caller",
+    "stacktrace",
+    "stack",
+    "trace",
+    "parent",
+    "function",
+    "file",
+    "module",
+    "invoker"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
