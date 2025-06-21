@@ -47,7 +47,7 @@ main();
   - Internet Explorer 11 (requires a workaround, see below)
   - LibJS (requires a workaround, see below)
 - Allows getting the caller function name, JS file, line number and position
-- Allows getting the caller up to the 9th depth in any of these JS engines
+- Allows getting the caller up to the 8th depth in any of these JS engines
 - Small, only 0.3 KB minified and gzipped
 
 ## Samples

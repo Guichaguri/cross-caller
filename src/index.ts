@@ -64,5 +64,5 @@ export function parseCallSite(stack: string, callerDepth: number): CallSite | nu
  * @param callerDepth The depth of the caller function in the stack. Default is 0, which means the immediate caller.
  */
 export function getCaller(callerDepth: number = 0): CallSite | null {
-  return parseCallSite(new Error().stack || '', callerDepth + 1);
+  return parseCallSite(new Error().stack || '', callerDepth + 2);
 }

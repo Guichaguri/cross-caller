@@ -44,14 +44,13 @@ test('should not skip a call site with error function', () => {
 });
 
 test('should get caller in the current engine', () => {
-  function foo() {
-    return getCaller();
-  }
+  function foo() { return getCaller(); }
+  function bar() { return foo(); }
 
-  const callsite = foo();
+  const callsite = bar();
 
   expect(callsite).not.toBeNull();
-  expect(callsite!.function).toBe(foo.name);
+  expect(callsite!.function).toBe(bar.name);
   expect(callsite!.file).toContain('parse.test.ts');
   expect(callsite!.line).not.toBe('');
   expect(callsite!.position).not.toBe('');
