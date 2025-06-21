@@ -1,5 +1,7 @@
 # cross-caller
 
+[![NPM](https://img.shields.io/npm/v/cross-caller)](https://www.npmjs.com/package/cross-caller)
+
 Gets the caller function name, path, line number and position in all browsers and server environments. 
 
 ```sh
