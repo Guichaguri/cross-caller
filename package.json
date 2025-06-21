@@ -1,6 +1,6 @@
 {
   "name": "cross-caller",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Gets the caller function, file and line number in all browsers and server environments",
   "license": "MIT",
   "author": "Guilherme Chaguri",
