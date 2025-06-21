@@ -34,12 +34,13 @@ main();
   - SpiderMonkey (Firefox)
   - Hermes (React Native and Expo)
   - ChakraCore (old Edge and old React Native for Windows)
+  - V4 (Qt)
   - QuickJS
   - QuickJS-NG
+  - Duktape
   - XS
   - GraalJS
   - Nashorn
-  - Duktape
   - Rhino (requires a workaround, see below)
   - Internet Explorer 11 (requires a workaround, see below)
   - LibJS (requires a workaround, see below)
@@ -83,14 +84,21 @@ function main() {
 main();
 ```
 
-## Workarounds
+## Caveats
 
-These JS engines require workarounds to get the stack trace or to parse it correctly.
+### Global Scope, Eval and REPL
 
-### Internet Explorer
+Each JS environment has a different way of handling the global scope, eval and REPL.
+That means that the call site details may vary in each of them.
 
-The stack info is not available in IE until you throw the error. If you really need IE 11 support, you can use this workaround that throws an error to get the stack trace.
-However, this is not recommended as it can lead to performance issues.
+For instance, in Node.js the global scope is reported as `Object.<anonymous>`, an eval file is reported as `eval at X, Y` and a REPL file is reported as `REPL0`.
+
+### IE 10 and IE 11
+
+The stack info is not available in IE until you throw the error.
+If you really need IE support, you can use the workaround below that throws an error to get the stack trace.
+
+However, while this approach does work in all browsers, it is not recommended as it can lead to performance issues.
 
 ```ts
 import { parseCallSite } from 'cross-caller';
@@ -106,8 +114,10 @@ function getCallerIE(depth) {
 
 ### Rhino
 
-Rhino supports three types of stack trace formats, only the V8 one is supported by this library.
-You'll have to enable the V8 format by setting the system property `rhino.stack.style` to `V8`, or call `RhinoException.setStackStyle(StackStyle.V8)` programmatically.
+Rhino supports three types of stack trace formats: Rhino's own format, V8 and Mozilla formats.
+This library supports both the V8 and the Mozilla formats.
+
+You'll need to change to either format by setting the system property `rhino.stack.style` to `V8` or `MOZILLA`, or call `RhinoException.setStackStyle(StackStyle.V8)` programmatically.
 
 ### LibJS
 
@@ -117,6 +127,10 @@ LibJS includes an extra line in the stack trace informing the error type, you'll
 console.log(getCaller(1)); // Gets the immediate caller
 console.log(getCaller(2)); // Gets the caller or the caller
 ```
+
+### Other
+
+Other JS engines are not supported by this library either because they don't emit stack traces (such as Boa and Kiesel) or they are very old and not widely used anymore (such as IE 9 and older).
 
 ## Resources
 
