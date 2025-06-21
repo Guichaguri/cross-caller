@@ -31,8 +31,12 @@ test('should parse in JavaScriptCore without function name', () => {
   expect(callsite!.position).toBe('1');
 });
 
-test('should not parse in JavaScriptCore without file info', () => {
+test('should parse in JavaScriptCore without file info', () => {
   const callsite = parseCallSite(stackJavaScriptCoreNoFileInfo, 0);
 
-  expect(callsite).toBeNull();
+  expect(callsite).not.toBeNull();
+  expect(callsite!.function).toBe('baz');
+  expect(callsite!.file).toBe('');
+  expect(callsite!.line).toBe('');
+  expect(callsite!.position).toBe('');
 });

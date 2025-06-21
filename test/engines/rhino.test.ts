@@ -47,14 +47,22 @@ test('should parse in Rhino V8 style without function name', () => {
 });
 
 
-test('should not parse in Rhino Mozilla style', () => {
+test('should parse in Rhino Mozilla style', () => {
   const callsite = parseCallSite(stackRhinoMozilla, 0);
 
-  expect(callsite).toBeNull();
+  expect(callsite).not.toBeNull();
+  expect(callsite!.function).toBe('abc');
+  expect(callsite!.file).toBe('filename.js');
+  expect(callsite!.line).toBe('3');
+  expect(callsite!.position).toBe('');
 });
 
-test('should not parse in Rhino Mozilla style without function name', () => {
+test('should parse in Rhino Mozilla style without function name', () => {
   const callsite = parseCallSite(stackRhinoMozilla, 2);
 
-  expect(callsite).toBeNull();
+  expect(callsite).not.toBeNull();
+  expect(callsite!.function).toBe('');
+  expect(callsite!.file).toBe('filename.js');
+  expect(callsite!.line).toBe('10');
+  expect(callsite!.position).toBe('');
 });

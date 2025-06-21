@@ -12,16 +12,20 @@ export interface CallSite {
   position: string;
 }
 
-// V8, CharkaCore, GraalJS, Hermes, QuickJS-NG, LibJS, Rhino - with function names
-const stackRegex1 = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/i;
+// V8, CharkaCore, GraalJS, Hermes, QuickJS-NG, LibJS, Rhino-V8 - with function names
+// "at {function} ({file}:{line}:{position})"
+const stackRegex1 = /at\s+(.*?)\s+\((.*):(\d*):(\d*)\)/i;
 
 // V8, CharkaCore, GraalJS, LibJS, Rhino - without function names
+// "at {file}:{line}:{position}"
 const stackRegex2 = /at\s+()(.*):(\d*):(\d*)/i;
 
-// JavaScriptCore and SpiderMonkey - both with and without function names
-const stackRegex3 = /(.*)@(.*):(\d*):(\d*)/i;
+// JavaScriptCore, SpiderMonkey, Rhino-Mozilla and V4 - both with and without function names and positions
+// "{function}@{file}:{line}:{position}"
+const stackRegex3 = /(.*?)(?:\(\))?@(?:(.*?):(\d+)(?::(\d+))?)?/i;
 
 // QuickJS, XS, Duktape and Nashorn - without position
+// "at {function} ({file}:{line})"
 const stackRegex4 = /at\s*(.*)\s+\((.*):(\d*)()\)/i;
 
 /**
@@ -45,10 +49,10 @@ export function parseCallSite(stack: string, callerDepth: number): CallSite | nu
 
   if (match && match.length === 5) {
     return {
-      function: match[1],
-      file: match[2],
-      line: match[3],
-      position: match[4],
+      function: match[1] || '',
+      file: match[2] || '',
+      line: match[3] || '',
+      position: match[4] || '',
     };
   }
 
