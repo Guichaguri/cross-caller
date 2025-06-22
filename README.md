@@ -2,11 +2,17 @@
 
 [![NPM](https://img.shields.io/npm/v/cross-caller)](https://www.npmjs.com/package/cross-caller)
 
-Gets the caller function name, path, line number and position in all browsers and server environments. 
+Allows a function to get its caller function name, file, line number and position in all JavaScript engines.
+
+This library is useful for debugging, logging, and tracing function calls.
+
+## Installation
 
 ```sh
 npm install cross-caller
 ```
+
+## Usage
 
 ```js
 // sample.js
@@ -31,8 +37,8 @@ main();
 ## Features
 
 - Supports almost all JavaScript engines (browsers, servers, mobile and embedded)
-  - V8 (Node.js, Deno and all Chromium-based browsers)
-  - JavaScriptCore (Safari, Bun and all iOS browsers)
+  - V8 (Node.js, Deno, Chrome, Edge, Opera and all other Chromium-based browsers)
+  - JavaScriptCore (Safari, Bun and all browsers in iOS)
   - SpiderMonkey (Firefox)
   - Hermes (React Native and Expo)
   - ChakraCore (old Edge and old React Native for Windows)
@@ -41,6 +47,7 @@ main();
   - QuickJS-NG
   - Duktape
   - XS
+  - Espruino
   - GraalJS
   - Nashorn
   - Rhino (requires a workaround, see below)
@@ -48,21 +55,21 @@ main();
   - LibJS (requires a workaround, see below)
 - Allows getting the caller function name, JS file, line number and position
 - Allows getting the caller up to the 8th depth in any of these JS engines
-- Small, only 0.3 KB minified and gzipped
+- Small, only ~0.3 KB minified and gzipped
 
-## Samples
+## Examples
 
 ```js
 import { getCaller } from 'cross-caller';
 
 function foo() {
-  // Gets the immediate caller (bar)
+  // Gets the immediate caller (which would be bar)
   console.log(getCaller().function === 'bar');
 
-  // Gets the caller of the caller (baz)
+  // Gets the caller of the caller (which would be baz)
   console.log(getCaller(1).function === 'baz');
 
-  // Gets the caller of the caller of the caller (global scope)
+  // Gets the caller of the caller of the caller (which would be the global scope)
   console.log(getCaller(2));
 }
 
@@ -93,7 +100,7 @@ main();
 Each JS environment has a different way of handling the global scope, eval and REPL.
 That means that the call site details may vary in each of them.
 
-For instance, in Node.js the global scope is reported as `Object.<anonymous>`, an eval file is reported as `eval at X, Y` and a REPL file is reported as `REPL0`.
+For instance, in Node.js the global scope is reported as `Object.<anonymous>`, an eval file reported as `eval at X, Y` and a REPL file is reported as `REPL0`.
 
 ### IE 10 and IE 11
 
@@ -121,21 +128,6 @@ This library supports both the V8 and the Mozilla formats.
 
 You'll need to change to either format by setting the system property `rhino.stack.style` to `V8` or `MOZILLA`, or call `RhinoException.setStackStyle(StackStyle.V8)` programmatically.
 
-### LibJS
-
-LibJS includes an extra line in the stack trace informing the error type, you'll have to skip that one manually by increasing the depth by one.
-
-```ts
-console.log(getCaller(1)); // Gets the immediate caller
-console.log(getCaller(2)); // Gets the caller or the caller
-```
-
 ### Other
 
-Other JS engines are not supported by this library either because they don't emit stack traces (such as Boa and Kiesel) or they are very old and not widely used anymore (such as IE 9 and older).
-
-## Resources
-
-- [jsvu](https://github.com/GoogleChromeLabs/jsvu): a really good tool that installs and runs many JavaScript engines.
-- [Error.prototype.stack](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack): the property that returns the stack trace, used by this library to determine the caller.
-
+Other JS engines are not supported by this library either because they don't emit stack traces (such as Boa, Kiesel and JerryScript) or they are very old and not widely used anymore (such as IE 9 and older).
