@@ -34,26 +34,27 @@ const stackRegex4 = /at\s*(.*)\s+\((.*):(\d*)()\)/i;
  * @param callerDepth The depth of the caller function in the stack. Zero means the immediate caller.
  */
 export function parseCallSite(stack: string, callerDepth: number): CallSite | null {
-  let list = stack.trim().split('\n');
+  const list = stack.trim().split('\n');
 
-  // In V8 the first line is the error message, we'll skip that
-  if (list[0].endsWith('Error') || list[0].includes('Error: ')) {
-    list = list.slice(1);
-  }
+  for (let i = 0, depth = 0; i < list.length; i++) {
+    const line = list[i];
+    const match = stackRegex1.exec(line)
+      || stackRegex2.exec(line)
+      || stackRegex3.exec(line)
+      || stackRegex4.exec(line);
 
-  const line = list[callerDepth] || '';
-  const match = stackRegex1.exec(line)
-    || stackRegex2.exec(line)
-    || stackRegex3.exec(line)
-    || stackRegex4.exec(line);
+    if (!match || match.length !== 5) {
+      continue;
+    }
 
-  if (match && match.length === 5) {
-    return {
-      function: match[1] || '',
-      file: match[2] || '',
-      line: match[3] || '',
-      position: match[4] || '',
-    };
+    if (depth++ === callerDepth) {
+      return {
+        function: match[1] || '',
+        file: match[2] || '',
+        line: match[3] || '',
+        position: match[4] || '',
+      };
+    }
   }
 
   return null;

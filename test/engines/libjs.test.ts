@@ -9,7 +9,7 @@ const stackLibJS = `Error
 `;
 
 test('should parse in LibJS with function name', () => {
-  const callsite = parseCallSite(stackLibJS, 1);
+  const callsite = parseCallSite(stackLibJS, 0);
 
   expect(callsite).not.toBeNull();
   expect(callsite!.function).toBe('abc');
@@ -19,7 +19,7 @@ test('should parse in LibJS with function name', () => {
 });
 
 test('should parse in LibJS without function name', () => {
-  const callsite = parseCallSite(stackLibJS, 3);
+  const callsite = parseCallSite(stackLibJS, 2);
 
   expect(callsite).not.toBeNull();
   expect(callsite!.function).toBe('');

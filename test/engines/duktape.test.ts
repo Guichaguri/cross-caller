@@ -30,9 +30,12 @@ test('should parse in Duktape eval with flags', () => {
 });
 
 
-test('should not parse in Duktape eval without file info', () => {
+test('should skip eval without file info and parse next line in Duktape', () => {
   const callsite = parseCallSite(stackDuktape, 3);
 
-  expect(callsite).toBeNull();
+  expect(callsite).not.toBeNull();
+  expect(callsite!.function).toBe('[anon]');
+  expect(callsite!.file).toBe('eval');
+  expect(callsite!.line).toBe('1');
+  expect(callsite!.position).toBe('');
 });
-
