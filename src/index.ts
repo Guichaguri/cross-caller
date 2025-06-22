@@ -12,7 +12,7 @@ export interface CallSite {
   position: string;
 }
 
-// V8, CharkaCore, GraalJS, Hermes, QuickJS-NG, LibJS, Rhino-V8 - with function names
+// V8, CharkaCore, GraalJS, Hermes, QuickJS-NG, LibJS, Rhino-V8, Espruino - with function names
 // "at {function} ({file}:{line}:{position})"
 const stackRegex1 = /at\s+(.*?)\s+\((.*):(\d*):(\d*)\)/i;
 
