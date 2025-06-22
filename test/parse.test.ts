@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { getCaller, parseCallSite } from '../src';
 
 test('should not parse an invalid stack', () => {
@@ -54,4 +54,17 @@ test('should get caller in the current engine', () => {
   expect(callsite!.file).toContain('parse.test.ts');
   expect(callsite!.line).not.toBe('');
   expect(callsite!.position).not.toBe('');
-})
+});
+
+test('should return null if the stack is missing', () => {
+  vi.stubGlobal('Error', class Error {});
+
+  function foo() { return getCaller(); }
+  function bar() { return foo(); }
+
+  const callsite = bar();
+
+  expect(callsite).toBeNull();
+
+  vi.unstubAllGlobals();
+});
