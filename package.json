@@ -1,6 +1,6 @@
 {
   "name": "cross-caller",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Gets the caller function, file and line number in all browsers and server environments",
   "license": "MIT",
   "author": "Guilherme Chaguri",
@@ -24,48 +24,28 @@
     "invoker"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "microbundle --format cjs,esm",
+    "clean": "rimraf dist",
     "test": "vitest",
     "coverage": "vitest run --coverage --coverage.include=src/**",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "files": [
     "dist"
   ],
+  "source": "./src/index.ts",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
-    }
-  },
-  "tsup": {
-    "entry": [
-      "src/index.ts"
-    ],
-    "target": "es2020",
-    "platform": "neutral",
-    "format": [
-      "esm",
-      "cjs"
-    ],
-    "outDir": "./dist",
-    "dts": true,
-    "minify": true,
-    "sourcemap": true,
-    "clean": true
+    "types": "./dist/index.d.ts",
+    "require": "./dist/index.js",
+    "default": "./dist/index.mjs"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.4",
-    "tsup": "^8.5.0",
+    "microbundle": "^0.15.1",
+    "rimraf": "^6.0.1",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   }
