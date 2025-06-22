@@ -42,6 +42,7 @@ main();
   - SpiderMonkey (Firefox)
   - Hermes (React Native and Expo)
   - ChakraCore (old Edge and old React Native for Windows)
+  - LibJS (Ladybird)
   - V4 (Qt)
   - QuickJS
   - QuickJS-NG
@@ -51,8 +52,8 @@ main();
   - GraalJS
   - Nashorn
   - Rhino (requires a workaround, see below)
-  - Internet Explorer 11 (requires a workaround, see below)
-  - LibJS (requires a workaround, see below)
+  - Internet Explorer 10+ (requires a workaround, see below)
+  - engine262
 - Allows getting the caller function name, JS file, line number and position
 - Allows getting the caller up to the 8th depth in any of these JS engines
 - Small, only ~0.3 KB minified and gzipped
@@ -97,14 +98,16 @@ main();
 
 ### Global Scope, Eval and REPL
 
-Each JS environment has a different way of handling the global scope, eval and REPL.
+Each JS environment has a different way of naming the global scope, eval and REPL.
 That means that the call site details may vary in each of them.
 
-For instance, in Node.js the global scope is reported as `Object.<anonymous>`, an eval file reported as `eval at X, Y` and a REPL file is reported as `REPL0`.
+For instance, in Node.js the global scope is reported as `Object.<anonymous>`, an eval is reported as `eval at X, Y` and a REPL is reported as `REPL0`.
+In Chrome, the DevTools Console is reported as `<anonymous>`.
+In Firefox, an eval is reported as `Y line X > eval` and the DevTools Console is reported as `debugger eval code`.
 
 ### IE 10 and IE 11
 
-The stack info is not available in IE until you throw the error.
+The stack info is not available in Internet Explorer until you throw the error.
 If you really need IE support, you can use the workaround below that throws an error to get the stack trace.
 
 However, while this approach does work in all browsers, it is not recommended as it can lead to performance issues.
@@ -116,7 +119,7 @@ function getCallerIE(depth) {
   try {
     throw new Error();
   } catch (err) {
-    return parseCallSite(err.stack, (depth || 0) + 1);
+    return parseCallSite(err.stack, (depth || 0) + 2);
   }
 }
 ```
