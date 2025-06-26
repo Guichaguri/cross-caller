@@ -51,9 +51,11 @@ main();
   - Espruino
   - GraalJS
   - Nashorn
-  - Rhino (requires a workaround, see below)
-  - Internet Explorer 10+ (requires a workaround, see below)
+  - Rhino (requires an additional step, see below)
+  - Internet Explorer 10+ (requires an additional step, see below)
+  - njs (requires an additional step, see below)
   - engine262
+  - MuJS
 - Allows getting the caller function name, JS file, line number and position
 - Allows getting the caller up to the 8th depth in any of these JS engines
 - Small, only ~0.3 KB minified and gzipped
@@ -105,12 +107,12 @@ For instance, in Node.js the global scope is reported as `Object.<anonymous>`, a
 In Chrome, the DevTools Console is reported as `<anonymous>`.
 In Firefox, an eval is reported as `Y line X > eval` and the DevTools Console is reported as `debugger eval code`.
 
-### IE 10 and IE 11
+### IE 10, IE 11 and njs
 
-The stack info is not available in Internet Explorer until you throw the error.
+The stack info is not available until you throw the error.
 If you really need IE support, you can use the workaround below that throws an error to get the stack trace.
 
-However, while this approach does work in all browsers, it is not recommended as it can lead to performance issues.
+However, while this approach does work in all engines, it is not recommended as it can lead to performance issues.
 
 ```ts
 import { parseCallSite } from 'cross-caller';
