@@ -49,6 +49,7 @@ main();
   - Duktape
   - XS
   - Espruino
+  - Jint
   - GraalJS
   - Nashorn
   - Rhino (requires an additional step, see below)
