@@ -24,9 +24,13 @@ const stackRegex2 = /at\s+()(.*):(\d*):(\d*)/i;
 // "{function}@{file}:{line}:{position}"
 const stackRegex3 = /(.*?)(?:\(\))?@(?:(.*?):(\d+)(?::(\d+))?)?/i;
 
-// QuickJS, XS, Duktape, Nashorn, MuJS and njs - without position
+// QuickJS, XS, Duktape, Nashorn, MuJS, njs and Jurassic - without position
 // "at {function} ({file}:{line})"
 const stackRegex4 = /at\s*(.*)\s+\((.*):(\d*)()\)/i;
+
+// Rhino, MuJS and Jurassic - without function names and positions
+// "at {file}:{line}"
+const stackRegex5 = /at\s*()(.*):(\d*)()/i;
 
 /**
  * Parses the call site at the specified depth from a stack trace.
@@ -41,7 +45,8 @@ export function parseCallSite(stack: string, callerDepth: number): CallSite | nu
     const match = stackRegex1.exec(line)
       || stackRegex2.exec(line)
       || stackRegex3.exec(line)
-      || stackRegex4.exec(line);
+      || stackRegex4.exec(line)
+      || stackRegex5.exec(line);
 
     if (!match || match.length !== 5) {
       continue;
