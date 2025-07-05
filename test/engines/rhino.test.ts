@@ -14,16 +14,24 @@ const stackRhinoMozilla = `abc()@filename.js:3
 def()@filename.js:7
 @filename.js:10`;
 
-test('should not parse in Rhino', () => {
+test('should parse in Rhino ignoring function names', () => {
   const callsite = parseCallSite(stackRhino, 0);
 
-  expect(callsite).toBeNull();
+  expect(callsite).not.toBeNull();
+  expect(callsite!.function).toBe('');
+  expect(callsite!.file).toBe('filename.js');
+  expect(callsite!.line).toBe('3');
+  expect(callsite!.position).toBe('');
 });
 
-test('should not parse in Rhino without function name', () => {
+test('should parse in Rhino without function name', () => {
   const callsite = parseCallSite(stackRhino, 2);
 
-  expect(callsite).toBeNull();
+  expect(callsite).not.toBeNull();
+  expect(callsite!.function).toBe('');
+  expect(callsite!.file).toBe('filename.js');
+  expect(callsite!.line).toBe('10');
+  expect(callsite!.position).toBe('');
 });
 
 test('should parse in Rhino V8 style', () => {

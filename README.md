@@ -49,12 +49,13 @@ main();
   - Duktape
   - XS
   - Espruino
-  - Jint
   - GraalJS
   - Nashorn
+  - Jint
   - Rhino (requires an additional step, see below)
   - Internet Explorer 10+ (requires an additional step, see below)
   - njs (requires an additional step, see below)
+  - Jurassic (requires an additional step, see below)
   - engine262
   - MuJS
 - Allows getting the caller function name, JS file, line number and position
@@ -108,17 +109,19 @@ For instance, in Node.js the global scope is reported as `Object.<anonymous>`, a
 In Chrome, the DevTools Console is reported as `<anonymous>`.
 In Firefox, an eval is reported as `Y line X > eval` and the DevTools Console is reported as `debugger eval code`.
 
-### IE 10, IE 11 and njs
+### IE 10, IE 11, njs and Jurassic
 
 The stack info is not available until you throw the error.
-If you really need IE support, you can use the workaround below that throws an error to get the stack trace.
+If you really need support in these environments, you can use the workaround below that throws an error to get the stack trace.
 
 However, while this approach does work in all engines, it is not recommended as it can lead to performance issues.
 
 ```ts
 import { parseCallSite } from 'cross-caller';
 
-function getCallerIE(depth) {
+// Works on IE 10, IE 11, njs and Jurassic
+// as well as all other supported JS engines
+function getCallerCompat(depth) {
   try {
     throw new Error();
   } catch (err) {
@@ -130,9 +133,9 @@ function getCallerIE(depth) {
 ### Rhino
 
 Rhino supports three types of stack trace formats: Rhino's own format, V8 and Mozilla formats.
-This library supports both the V8 and the Mozilla formats.
+This library does not supports capturing filenames in Rhino's own format, but does on both the V8 and the Mozilla formats.
 
-You'll need to change to either format by setting the system property `rhino.stack.style` to `V8` or `MOZILLA`, or call `RhinoException.setStackStyle(StackStyle.V8)` programmatically.
+You can change to either format by setting the system property `rhino.stack.style` to `V8` or `MOZILLA`, or call `RhinoException.setStackStyle(StackStyle.V8)` programmatically.
 
 ### Other
 
