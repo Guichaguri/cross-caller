@@ -48,7 +48,7 @@ export function parseCallSite(stack: string, callerDepth: number): CallSite | nu
       || stackRegex4.exec(line)
       || stackRegex5.exec(line);
 
-    if (!match || match.length !== 5) {
+    if (!match) {
       continue;
     }
 
